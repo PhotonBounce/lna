@@ -337,10 +337,10 @@ footer{padding:40px;text-align:center;border-top:1px solid #1e2640;font-size:13p
 
   <div class="demo-box">
    <div class="demo-tabs">
-    <div class="demo-tab active" onclick="switchDemo('notes')">📝 Smart Notes</div>
-    <div class="demo-tab" onclick="switchDemo('patients')">👤 Patient Dashboard</div>
-    <div class="demo-tab" onclick="switchDemo('compliance')">✅ Compliance Monitor</div>
-    <div class="demo-tab" onclick="switchDemo('schedule')">📅 Scheduling</div>
+    <div class="demo-tab active" onclick="switchDemo('notes', this)">📝 Smart Notes</div>
+    <div class="demo-tab" onclick="switchDemo('patients', this)">👤 Patient Dashboard</div>
+    <div class="demo-tab" onclick="switchDemo('compliance', this)">✅ Compliance Monitor</div>
+    <div class="demo-tab" onclick="switchDemo('schedule', this)">📅 Scheduling</div>
    </div>
 
    <!-- SMART NOTES DEMO -->
@@ -691,7 +691,7 @@ const hospiceML = {
   for (const p of this.patterns) {
    if (lower.endsWith(p.trigger.toLowerCase()) || lower.includes(p.trigger.toLowerCase())) {
     const suggestions = p.suggestions;
-    return suggestions[Math.floor(Math.random() * suggestions.length)];
+    return suggestions[this.queryCount % suggestions.length];
    }
   }
 
@@ -769,10 +769,10 @@ function acceptSuggestion() {
 }
 
 /* ===== DEMO TABS ===== */
-function switchDemo(tab) {
+function switchDemo(tab, clickedEl) {
  document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
  document.querySelectorAll('.demo-panel').forEach(p => p.classList.remove('active'));
- event.target.classList.add('active');
+ clickedEl.classList.add('active');
  document.getElementById('demo-' + tab).classList.add('active');
 }
 
