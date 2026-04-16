@@ -152,7 +152,12 @@ function addUserMessage(text) {
  var msgs = document.getElementById('chatMessages');
  var div = document.createElement('div');
  div.className = 'chat-msg user';
- div.innerHTML = text + '<span class="msg-time">Just now</span>';
+ var textNode = document.createTextNode(text);
+ div.appendChild(textNode);
+ var timeSpan = document.createElement('span');
+ timeSpan.className = 'msg-time';
+ timeSpan.textContent = 'Just now';
+ div.appendChild(timeSpan);
  msgs.appendChild(div);
  msgs.scrollTop = msgs.scrollHeight;
  ChatBot.messages.push({role:'user',text:text});
