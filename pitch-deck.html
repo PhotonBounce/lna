@@ -1,845 +1,653 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Photon Bounce — AI Medical Suite | Pitch Deck</title>
+<title>Photon Bounce — ИИ-Медицинский Комплекс | Белая Книга</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="googlebot" content="noindex, nofollow">
 <style>
-/* ========== RESET & BASE ========== */
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{
   font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
   background:#060a14;
   color:#e5e7eb;
-  overflow:hidden;
-  height:100vh;
+  overflow-x:hidden;
 }
 
-/* ========== SLIDE SYSTEM ========== */
-.deck{height:100vh;width:100vw;position:relative;}
-
-.slide{
-  position:absolute;
-  inset:0;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  padding:60px 80px;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity 0.6s ease, transform 0.6s ease;
-  transform:translateY(30px);
-  overflow-y:auto;
-}
-.slide.active{
-  opacity:1;
-  pointer-events:all;
-  transform:translateY(0);
+/* ========== LAYOUT ========== */
+.container{
+  max-width:900px;
+  margin:0 auto;
+  padding:40px 32px 80px;
 }
 
-/* ========== NAV CONTROLS ========== */
-.nav{
-  position:fixed;
-  bottom:28px;
-  left:50%;
-  transform:translateX(-50%);
-  display:flex;
-  gap:12px;
-  z-index:100;
-  align-items:center;
-}
-.nav button{
-  background:rgba(34,197,94,0.15);
-  border:1px solid rgba(34,197,94,0.4);
-  color:#22c55e;
-  padding:10px 22px;
-  border-radius:30px;
-  cursor:pointer;
-  font-size:14px;
-  font-weight:600;
-  transition:all 0.3s;
-  backdrop-filter:blur(12px);
-}
-.nav button:hover{
-  background:rgba(34,197,94,0.3);
-  box-shadow:0 0 20px rgba(34,197,94,0.3);
-}
-.nav button:disabled{
-  opacity:0.3;
-  cursor:default;
-}
-.slide-counter{
-  color:rgba(255,255,255,0.5);
-  font-size:13px;
-  min-width:60px;
+/* ========== HEADER ========== */
+.header{
   text-align:center;
+  padding:80px 20px 50px;
+  position:relative;
 }
-
-/* ========== DOT NAV ========== */
-.dots{
-  position:fixed;
-  right:24px;
-  top:50%;
-  transform:translateY(-50%);
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  z-index:100;
-}
-.dot{
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  background:rgba(255,255,255,0.15);
-  border:1px solid rgba(255,255,255,0.2);
-  cursor:pointer;
-  transition:all 0.3s;
-}
-.dot.active{
+.header::after{
+  content:'';
+  position:absolute;
+  top:-100px;right:-100px;
+  width:500px;height:500px;
   background:#22c55e;
-  border-color:#22c55e;
-  box-shadow:0 0 10px rgba(34,197,94,0.6);
+  border-radius:50%;
+  filter:blur(180px);
+  opacity:0.08;
+  pointer-events:none;
 }
-
-/* ========== TYPOGRAPHY ========== */
-.slide-label{
-  font-size:11px;
+.badge{
+  display:inline-block;
+  font-size:10px;
   text-transform:uppercase;
   letter-spacing:3px;
   color:#22c55e;
-  margin-bottom:14px;
+  border:1px solid rgba(34,197,94,0.3);
+  padding:6px 18px;
+  border-radius:30px;
+  margin-bottom:20px;
   font-weight:700;
 }
 h1{
-  font-size:clamp(36px,5vw,64px);
+  font-size:clamp(30px,5vw,52px);
   font-weight:900;
-  line-height:1.1;
-  margin-bottom:20px;
-  background:linear-gradient(135deg,#ffffff 0%,#94a3b8 100%);
+  line-height:1.15;
+  margin-bottom:18px;
+  background:linear-gradient(135deg,#fff 0%,#94a3b8 100%);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
+}
+.glow{
+  color:#22c55e;
+  -webkit-text-fill-color:#22c55e;
+  text-shadow:0 0 30px rgba(34,197,94,0.4);
+}
+.subtitle{
+  font-size:17px;
+  opacity:0.65;
+  max-width:640px;
+  margin:0 auto;
+  line-height:1.7;
+}
+
+/* ========== CONFIDENTIAL BANNER ========== */
+.confidential{
+  background:rgba(239,68,68,0.08);
+  border:1px solid rgba(239,68,68,0.25);
+  border-radius:10px;
+  padding:12px 20px;
   text-align:center;
+  font-size:12px;
+  color:#f87171;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  font-weight:700;
+  margin-bottom:40px;
+}
+
+/* ========== SECTIONS ========== */
+.section{
+  margin-bottom:48px;
+}
+.section-label{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:3px;
+  color:#22c55e;
+  margin-bottom:10px;
+  font-weight:700;
 }
 h2{
-  font-size:clamp(28px,3.5vw,44px);
+  font-size:26px;
   font-weight:800;
-  margin-bottom:16px;
-  text-align:center;
+  margin-bottom:14px;
+  line-height:1.3;
 }
 h3{
-  font-size:20px;
+  font-size:18px;
   font-weight:700;
   margin-bottom:8px;
 }
-.subtitle{
-  font-size:clamp(16px,2vw,22px);
-  opacity:0.7;
-  max-width:700px;
-  text-align:center;
-  line-height:1.6;
+p{
+  font-size:14px;
+  line-height:1.75;
+  opacity:0.85;
+  margin-bottom:10px;
 }
-
-/* ========== GLOW ACCENT ========== */
-.glow{
+.highlight{
   color:#22c55e;
-  text-shadow:0 0 30px rgba(34,197,94,0.5);
-  -webkit-text-fill-color:#22c55e;
+  font-weight:700;
 }
 
-/* ========== CARDS / GRIDS ========== */
-.grid-3{
+/* ========== DIVIDER ========== */
+.divider{
+  border:none;
+  border-top:1px solid rgba(31,41,55,0.7);
+  margin:48px 0;
+}
+
+/* ========== STAT ROW ========== */
+.stats{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:20px;
-  max-width:1100px;
-  width:100%;
-  margin-top:30px;
+  margin:24px 0;
 }
-.grid-2{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:20px;
-  max-width:1000px;
-  width:100%;
-  margin-top:24px;
-}
-.grid-5{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:14px;
-  max-width:1200px;
-  width:100%;
-  margin-top:24px;
-}
-
-.card{
-  background:rgba(17,24,39,0.8);
-  border:1px solid rgba(31,41,55,0.8);
-  border-radius:16px;
-  padding:24px;
-  backdrop-filter:blur(12px);
-  transition:all 0.3s;
-}
-.card:hover{
-  border-color:rgba(34,197,94,0.4);
-  transform:translateY(-3px);
-  box-shadow:0 8px 30px rgba(34,197,94,0.1);
-}
-
-.card-icon{
-  font-size:32px;
-  margin-bottom:12px;
-}
-
-.card p{
-  font-size:13px;
-  line-height:1.6;
-  opacity:0.8;
-}
-
-/* ========== STAT BOXES ========== */
 .stat{
   text-align:center;
-  padding:20px;
+  padding:24px 16px;
+  background:rgba(17,24,39,0.6);
+  border:1px solid rgba(31,41,55,0.8);
+  border-radius:16px;
 }
-.stat-number{
-  font-size:clamp(32px,4vw,52px);
+.stat-num{
+  font-size:36px;
   font-weight:900;
   color:#22c55e;
-  text-shadow:0 0 20px rgba(34,197,94,0.4);
+  text-shadow:0 0 16px rgba(34,197,94,0.35);
 }
-.stat-label{
-  font-size:13px;
-  opacity:0.6;
+.stat-lbl{
+  font-size:12px;
+  opacity:0.55;
   margin-top:6px;
 }
 
-/* ========== TIER CARDS ========== */
-.tier{
-  background:rgba(17,24,39,0.8);
-  border:1px solid rgba(31,41,55,0.8);
-  border-radius:20px;
-  padding:32px 24px;
-  text-align:center;
-  transition:all 0.3s;
+/* ========== CARDS ========== */
+.card-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+  margin:20px 0;
 }
-.tier.featured{
-  border-color:#22c55e;
-  background:linear-gradient(135deg,rgba(5,46,31,0.6),rgba(6,78,59,0.4));
-  box-shadow:0 0 40px rgba(34,197,94,0.15);
-  transform:scale(1.04);
-}
-.tier-price{
-  font-size:42px;
-  font-weight:900;
-  color:#22c55e;
-  margin:12px 0;
-}
-.tier-name{
-  font-size:12px;
-  text-transform:uppercase;
-  letter-spacing:2px;
-  opacity:0.6;
-}
-.tier ul{
-  list-style:none;
-  text-align:left;
-  margin-top:16px;
-}
-.tier li{
-  font-size:13px;
-  padding:6px 0;
-  opacity:0.8;
-}
-.tier li::before{
-  content:'✓ ';
-  color:#22c55e;
-  font-weight:bold;
-}
-
-/* ========== PRODUCT GRID ========== */
-.product-card{
-  background:rgba(17,24,39,0.8);
+.card{
+  background:rgba(17,24,39,0.7);
   border:1px solid rgba(31,41,55,0.8);
   border-radius:14px;
-  padding:18px;
-  text-align:center;
-  transition:all 0.3s;
+  padding:22px;
+  transition:border-color 0.3s;
 }
-.product-card:hover{
-  border-color:rgba(34,197,94,0.5);
-  box-shadow:0 4px 20px rgba(34,197,94,0.1);
+.card:hover{
+  border-color:rgba(34,197,94,0.35);
 }
-.product-card h4{
-  font-size:13px;
-  font-weight:700;
+.card-icon{
+  font-size:26px;
+  margin-bottom:10px;
+}
+.card h3{
+  font-size:15px;
   margin-bottom:6px;
 }
-.product-card p{
-  font-size:11px;
-  opacity:0.6;
-  line-height:1.5;
+.card p{
+  font-size:13px;
+  opacity:0.7;
+  line-height:1.6;
 }
 
-/* ========== TIMELINE ========== */
-.timeline{
+/* ========== PRODUCT LIST ========== */
+.product-list{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+  margin:20px 0;
+}
+.product{
   display:flex;
-  gap:0;
-  max-width:1000px;
-  width:100%;
-  margin-top:30px;
-  position:relative;
+  gap:12px;
+  align-items:flex-start;
+  padding:16px;
+  background:rgba(17,24,39,0.5);
+  border:1px solid rgba(31,41,55,0.7);
+  border-radius:12px;
 }
-.timeline::after{
-  content:'';
-  position:absolute;
-  top:36px;
-  left:0;
-  right:0;
-  height:2px;
-  background:linear-gradient(90deg,#22c55e,#064e3b);
+.product-icon{
+  font-size:22px;
+  flex-shrink:0;
+  margin-top:2px;
 }
-.tl-step{
-  flex:1;
-  text-align:center;
-  position:relative;
-  padding-top:60px;
-}
-.tl-step::before{
-  content:'';
-  position:absolute;
-  top:28px;
-  left:50%;
-  transform:translateX(-50%);
-  width:18px;
-  height:18px;
-  border-radius:50%;
-  background:#22c55e;
-  border:3px solid #0b0f1a;
-  z-index:1;
-}
-.tl-step h4{
+.product h4{
   font-size:14px;
-  margin-bottom:6px;
+  font-weight:700;
+  margin-bottom:4px;
 }
-.tl-step p{
+.product p{
   font-size:12px;
   opacity:0.6;
   line-height:1.5;
+  margin:0;
 }
 
+/* ========== COMPETITIVE TABLE ========== */
+.comp-table{
+  width:100%;
+  border-collapse:collapse;
+  margin:20px 0;
+  font-size:13px;
+}
+.comp-table th{
+  background:rgba(34,197,94,0.1);
+  padding:12px 16px;
+  text-align:left;
+  font-weight:700;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  border-bottom:1px solid rgba(34,197,94,0.25);
+}
+.comp-table td{
+  padding:10px 16px;
+  border-bottom:1px solid rgba(31,41,55,0.5);
+}
+.comp-table .us{
+  color:#22c55e;
+  font-weight:700;
+}
+.comp-table .them{
+  color:#ef4444;
+  opacity:0.7;
+}
+.check{color:#22c55e;}
+.cross{color:#ef4444;opacity:0.6;}
+
 /* ========== CTA ========== */
+.cta{
+  text-align:center;
+  padding:50px 20px;
+  margin-top:20px;
+  position:relative;
+}
+.cta::before{
+  content:'';
+  position:absolute;
+  bottom:-60px;left:30%;
+  width:400px;height:400px;
+  background:#22c55e;
+  border-radius:50%;
+  filter:blur(160px);
+  opacity:0.06;
+  pointer-events:none;
+}
 .cta-btn{
   display:inline-block;
-  margin-top:30px;
-  padding:16px 48px;
+  padding:16px 44px;
   background:linear-gradient(135deg,#22c55e,#16a34a);
   color:#fff;
-  font-size:18px;
+  font-size:17px;
   font-weight:700;
   border:none;
   border-radius:50px;
   cursor:pointer;
   text-decoration:none;
   transition:all 0.3s;
-  box-shadow:0 4px 30px rgba(34,197,94,0.4);
+  box-shadow:0 4px 30px rgba(34,197,94,0.35);
 }
 .cta-btn:hover{
   transform:translateY(-2px);
-  box-shadow:0 8px 40px rgba(34,197,94,0.6);
+  box-shadow:0 8px 40px rgba(34,197,94,0.5);
 }
 
-/* ========== BACKGROUND EFFECTS ========== */
-.bg-orb{
-  position:absolute;
-  border-radius:50%;
-  filter:blur(120px);
-  opacity:0.15;
-  pointer-events:none;
-}
-.orb-green{
-  background:#22c55e;
-  width:400px;height:400px;
-  top:-100px;right:-100px;
-}
-.orb-blue{
-  background:#3b82f6;
-  width:350px;height:350px;
-  bottom:-80px;left:-80px;
-}
-
-/* ========== LOGO ========== */
-.logo{
-  position:fixed;
-  top:24px;
-  left:28px;
-  z-index:100;
-  font-weight:900;
-  font-size:16px;
-  letter-spacing:1px;
-  color:#22c55e;
-  text-shadow:0 0 12px rgba(34,197,94,0.5);
+/* ========== FOOTER ========== */
+.footer{
+  text-align:center;
+  padding:30px;
+  font-size:11px;
+  opacity:0.3;
+  border-top:1px solid rgba(31,41,55,0.5);
 }
 
 /* ========== RESPONSIVE ========== */
-@media(max-width:900px){
-  .grid-3{grid-template-columns:1fr;}
-  .grid-2{grid-template-columns:1fr;}
-  .grid-5{grid-template-columns:repeat(2,1fr);}
-  .slide{padding:30px 24px;}
-  .timeline{flex-direction:column;gap:20px;}
-  .timeline::after{display:none;}
-  .tl-step{padding-top:0;padding-left:30px;text-align:left;}
-  .tl-step::before{top:2px;left:0;}
-}
-
-/* ========== REVENUE TABLE ========== */
-.rev-table{
-  width:100%;
-  max-width:1000px;
-  border-collapse:collapse;
-  margin-top:24px;
-  font-size:13px;
-}
-.rev-table th{
-  background:rgba(34,197,94,0.15);
-  padding:12px 16px;
-  text-align:left;
-  font-weight:700;
-  font-size:12px;
-  text-transform:uppercase;
-  letter-spacing:1px;
-  border-bottom:1px solid rgba(34,197,94,0.3);
-}
-.rev-table td{
-  padding:10px 16px;
-  border-bottom:1px solid rgba(31,41,55,0.6);
-}
-.rev-table tr:hover td{
-  background:rgba(34,197,94,0.05);
-}
-.rev-highlight{
-  color:#22c55e;
-  font-weight:700;
-}
-
-/* ========== FOOTER NOTE ========== */
-.footer-note{
-  font-size:11px;
-  opacity:0.4;
-  margin-top:20px;
-  text-align:center;
+@media(max-width:700px){
+  .container{padding:24px 16px 60px;}
+  .stats{grid-template-columns:1fr;}
+  .card-grid{grid-template-columns:1fr;}
+  .product-list{grid-template-columns:1fr;}
+  .header{padding:50px 16px 30px;}
 }
 </style>
 </head>
 
 <body>
 
-<div class="logo">⚡ PHOTON BOUNCE</div>
+<div class="container">
 
-<!-- DOT NAV -->
-<div class="dots" id="dots"></div>
-
-<!-- BOTTOM NAV -->
-<div class="nav">
-  <button id="prevBtn" onclick="prev()">← Back</button>
-  <span class="slide-counter" id="counter">1 / 10</span>
-  <button id="nextBtn" onclick="next()">Next →</button>
+<!-- ==================== HEADER ==================== -->
+<div class="header">
+  <div class="badge">⚡ Photon Bounce — Конфиденциально, 2026</div>
+  <h1>ИИ-платформа для<br><span class="glow">медицины будущего</span></h1>
+  <p class="subtitle">10 интеллектуальных приложений, которые трансформируют управление здравоохранением и создают рекуррентный доход с первого дня.</p>
 </div>
 
-<div class="deck">
+<!-- CONFIDENTIAL -->
+<div class="confidential">🔒 Конфиденциальный документ — только для внутреннего использования</div>
 
-<!-- ==================== SLIDE 1: COVER ==================== -->
-<div class="slide active" data-slide="0">
-  <div class="bg-orb orb-green"></div>
-  <div class="bg-orb orb-blue"></div>
-  <div class="slide-label">Confidential Pitch Deck — 2026</div>
-  <h1>The Future of<br><span class="glow">AI-Powered Healthcare</span></h1>
-  <p class="subtitle">A turnkey suite of 10 intelligent medical applications — built to transform healthcare operations and generate recurring revenue from day one.</p>
-  <p style="margin-top:30px;font-size:13px;opacity:0.5;">Presented by Photon Bounce</p>
-</div>
+<hr class="divider">
 
-<!-- ==================== SLIDE 2: THE PROBLEM ==================== -->
-<div class="slide" data-slide="1">
-  <div class="bg-orb orb-blue" style="top:60%;right:-120px;"></div>
-  <div class="slide-label">The Problem</div>
-  <h2>Healthcare is Drowning in Inefficiency</h2>
-  <p class="subtitle">The U.S. healthcare system wastes <strong style="color:#22c55e">$935 billion annually</strong> on administrative complexity, pricing failures, and fragmented care delivery.</p>
-  <div class="grid-3">
-    <div class="card">
-      <div class="card-icon">📋</div>
-      <h3>60% of Time Wasted</h3>
-      <p>Physicians spend the majority of their day on documentation, not patient care — leading to burnout and turnover.</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">💸</div>
-      <h3>Billions Lost to Underbilling</h3>
-      <p>Hospitals leave an estimated 1-5% of revenue uncaptured due to coding errors and missed billing opportunities.</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">⚠️</div>
-      <h3>Compliance Failures</h3>
-      <p>HIPAA violations cost healthcare organizations $1.5M+ per incident, with increasing regulatory scrutiny.</p>
-    </div>
-  </div>
-</div>
+<!-- ==================== ПРОБЛЕМА ==================== -->
+<div class="section">
+  <div class="section-label">Проблема</div>
+  <h2>Здравоохранение тонет в неэффективности</h2>
+  <p>Система здравоохранения теряет <span class="highlight">$935 миллиардов ежегодно</span> на административную сложность, ошибки в кодировании и фрагментированную медицинскую помощь.</p>
 
-<!-- ==================== SLIDE 3: THE SOLUTION ==================== -->
-<div class="slide" data-slide="2">
-  <div class="bg-orb orb-green" style="bottom:-80px;left:50%;"></div>
-  <div class="slide-label">Our Solution</div>
-  <h2>One Platform. <span style="color:#22c55e;">Ten AI Solutions.</span></h2>
-  <p class="subtitle">We build, deploy, and maintain a modular AI medical suite tailored to your healthcare clients — generating SaaS revenue at scale.</p>
-  <div class="grid-3" style="margin-top:36px;">
+  <div class="stats">
     <div class="stat">
-      <div class="stat-number">10</div>
-      <div class="stat-label">Purpose-Built AI Apps</div>
+      <div class="stat-num">60%</div>
+      <div class="stat-lbl">Времени врача — документация</div>
     </div>
     <div class="stat">
-      <div class="stat-number">3</div>
-      <div class="stat-label">Development Tiers</div>
+      <div class="stat-num">$1.5M+</div>
+      <div class="stat-lbl">Штраф за нарушение HIPAA</div>
     </div>
     <div class="stat">
-      <div class="stat-number">∞</div>
-      <div class="stat-label">Scalable Revenue</div>
-    </div>
-  </div>
-  <p style="margin-top:24px;font-size:14px;opacity:0.6;text-align:center;max-width:600px;">Each application solves a critical pain point in healthcare operations, and can be sold individually or as a bundled platform to hospitals, clinics, and health networks.</p>
-</div>
-
-<!-- ==================== SLIDE 4: PRODUCT PORTFOLIO ==================== -->
-<div class="slide" data-slide="3">
-  <div class="slide-label">Product Portfolio</div>
-  <h2>10 AI Medical Applications</h2>
-  <div class="grid-5">
-    <div class="product-card">
-      <div style="font-size:24px;margin-bottom:6px;">🩺</div>
-      <h4>Clinical Documentation</h4>
-      <p>AI-powered SOAP notes from doctor conversations</p>
-    </div>
-    <div class="product-card">
-      <div style="font-size:24px;margin-bottom:6px;">📡</div>
-      <h4>Remote Patient Monitoring</h4>
-      <p>IoT-driven health tracking & anomaly detection</p>
-    </div>
-    <div class="product-card">
-      <div style="font-size:24px;margin-bottom:6px;">🔍</div>
-      <h4>AI Intake Triage</h4>
-      <p>Smart symptom assessment & care routing</p>
-    </div>
-    <div class="product-card">
-      <div style="font-size:24px;margin-bottom:6px;">💰</div>
-      <h4>Billing Optimization</h4>
-      <p>Uncover missed revenue & coding gaps</p>
-    </div>
-    <div class="product-card">
-      <div style="font-size:24px;margin-bottom:6px;">🛡️</div>
-      <h4>Compliance Monitoring</h4>
-      <p>Automated regulatory scanning & alerts</p>
-    </div>
-    <div class="product-card">
-      <div style="font-size:24px;margin-bottom:6px;">📅</div>
-      <h4>Staff Scheduling</h4>
-      <p>AI-optimized workforce management</p>
-    </div>
-    <div class="product-card">
-      <div style="font-size:24px;margin-bottom:6px;">📊</div>
-      <h4>Analytics Dashboard</h4>
-      <p>Real-time performance intelligence</p>
-    </div>
-    <div class="product-card">
-      <div style="font-size:24px;margin-bottom:6px;">💬</div>
-      <h4>Patient CRM</h4>
-      <p>Automated engagement & follow-ups</p>
-    </div>
-    <div class="product-card">
-      <div style="font-size:24px;margin-bottom:6px;">💊</div>
-      <h4>Drug Interaction AI</h4>
-      <p>Instant prescription safety checks</p>
-    </div>
-    <div class="product-card">
-      <div style="font-size:24px;margin-bottom:6px;">🖥️</div>
-      <h4>Telehealth AI</h4>
-      <p>AI-assisted virtual consultations</p>
+      <div class="stat-num">5%</div>
+      <div class="stat-lbl">Дохода теряется на недобиллинг</div>
     </div>
   </div>
 </div>
 
-<!-- ==================== SLIDE 5: DEEP DIVE — TOP 3 ==================== -->
-<div class="slide" data-slide="4">
-  <div class="bg-orb orb-green" style="top:-60px;left:-120px;"></div>
-  <div class="slide-label">Spotlight Products</div>
-  <h2>High-Impact Flagship Apps</h2>
-  <div class="grid-3">
-    <div class="card" style="border-top:3px solid #22c55e;">
-      <div class="card-icon">🩺</div>
-      <h3>AI Clinical Documentation</h3>
-      <p><strong>Problem:</strong> Doctors spend 60% of their time documenting, not caring.</p>
-      <p><strong>Solution:</strong> Speech-to-text → NLP → structured SOAP notes, pushed straight to EHR systems.</p>
-      <p><strong>Market:</strong> Start with outpatient clinics and hospice networks, then scale into hospital systems.</p>
-      <p style="margin-top:10px;color:#22c55e;font-weight:700;">~$40,000/mo at 50 facilities</p>
+<hr class="divider">
+
+<!-- ==================== РЕШЕНИЕ ==================== -->
+<div class="section">
+  <div class="section-label">Решение</div>
+  <h2>Одна платформа. Десять ИИ-решений.</h2>
+  <p>Мы проектируем, разрабатываем и поддерживаем модульный комплекс ИИ-приложений для здравоохранения — каждое решает критическую проблему и приносит регулярный SaaS-доход.</p>
+</div>
+
+<hr class="divider">
+
+<!-- ==================== ПОРТФЕЛЬ ==================== -->
+<div class="section">
+  <div class="section-label">Портфель продуктов</div>
+  <h2>10 ИИ-приложений для медицины</h2>
+
+  <div class="product-list">
+    <div class="product">
+      <div class="product-icon">🩺</div>
+      <div>
+        <h4>ИИ-Клиническая Документация</h4>
+        <p>Разговоры врача → структурированные SOAP-записи → автоматическая интеграция с ЭМК</p>
+      </div>
     </div>
-    <div class="card" style="border-top:3px solid #22c55e;">
-      <div class="card-icon">💰</div>
-      <h3>Billing Optimization AI</h3>
-      <p><strong>Problem:</strong> Hospitals lose millions from underbilling and coding errors.</p>
-      <p><strong>Solution:</strong> AI analyzes patient records against billing codes to find missed revenue.</p>
-      <p><strong>Market:</strong> Hospital finance departments managing thousands of claims.</p>
-      <p style="margin-top:10px;color:#22c55e;font-weight:700;">~$48,000/mo at 40 facilities</p>
+    <div class="product">
+      <div class="product-icon">📡</div>
+      <div>
+        <h4>Удалённый Мониторинг Пациентов</h4>
+        <p>IoT-устройства + ИИ-обнаружение аномалий + мгновенные оповещения</p>
+      </div>
     </div>
-    <div class="card" style="border-top:3px solid #22c55e;">
-      <div class="card-icon">📊</div>
-      <h3>Hospital Analytics Dashboard</h3>
-      <p><strong>Problem:</strong> Executives lack real-time visibility into operational performance.</p>
-      <p><strong>Solution:</strong> Aggregates financial, clinical, and operational data into actionable insights.</p>
-      <p><strong>Market:</strong> Hospital C-suite and leadership teams.</p>
-      <p style="margin-top:10px;color:#22c55e;font-weight:700;">~$50,000/mo at 20 facilities</p>
+    <div class="product">
+      <div class="product-icon">🔍</div>
+      <div>
+        <h4>ИИ-Триаж Приёма</h4>
+        <p>Оценка симптомов пациента → маршрутизация помощи по приоритету</p>
+      </div>
+    </div>
+    <div class="product">
+      <div class="product-icon">💰</div>
+      <div>
+        <h4>Оптимизация Биллинга</h4>
+        <p>Анализ записей vs коды → обнаружение упущенного дохода</p>
+      </div>
+    </div>
+    <div class="product">
+      <div class="product-icon">🛡️</div>
+      <div>
+        <h4>Мониторинг Соответствия</h4>
+        <p>Автоматическое сканирование нормативных требований → оповещения</p>
+      </div>
+    </div>
+    <div class="product">
+      <div class="product-icon">📅</div>
+      <div>
+        <h4>ИИ-Планирование Персонала</h4>
+        <p>Прогноз спроса → оптимальное распределение смен</p>
+      </div>
+    </div>
+    <div class="product">
+      <div class="product-icon">📊</div>
+      <div>
+        <h4>Аналитическая Панель</h4>
+        <p>Операционные и финансовые данные в реальном времени</p>
+      </div>
+    </div>
+    <div class="product">
+      <div class="product-icon">💬</div>
+      <div>
+        <h4>ИИ-CRM для Пациентов</h4>
+        <p>Автоматическая коммуникация, удержание и повторные визиты</p>
+      </div>
+    </div>
+    <div class="product">
+      <div class="product-icon">💊</div>
+      <div>
+        <h4>ИИ-Анализ Лекарств</h4>
+        <p>Мгновенная проверка взаимодействий препаратов</p>
+      </div>
+    </div>
+    <div class="product">
+      <div class="product-icon">🖥️</div>
+      <div>
+        <h4>ИИ-Телемедицина</h4>
+        <p>Виртуальные консультации с ИИ-ассистентом</p>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ==================== SLIDE 6: DEVELOPMENT TIERS ==================== -->
-<div class="slide" data-slide="5">
-  <div class="slide-label">Investment Tiers</div>
-  <h2>Choose Your Build Level</h2>
-  <p class="subtitle" style="margin-bottom:10px;">Each tier delivers a fully functional application — the difference is scale, polish, and enterprise readiness.</p>
-  <div class="grid-3">
-    <div class="tier">
-      <div class="tier-name">Starter</div>
-      <div class="tier-price">$3K</div>
-      <p style="opacity:0.6;font-size:13px;">Per Application</p>
-      <ul>
-        <li>Core MVP functionality</li>
-        <li>Single-tenant deployment</li>
-        <li>Basic UI / admin panel</li>
-        <li>API integrations (limited)</li>
-        <li>30-day post-launch support</li>
-      </ul>
-    </div>
-    <div class="tier featured">
-      <div class="tier-name">Recommended</div>
-      <div class="tier-price">$7K</div>
-      <p style="opacity:0.6;font-size:13px;">Per Application</p>
-      <ul>
-        <li>Full product-grade build</li>
-        <li>Multi-tenant architecture</li>
-        <li>Polished UI with analytics</li>
-        <li>Full API & EHR integrations</li>
-        <li>90-day post-launch support</li>
-        <li>White-label ready</li>
-      </ul>
-    </div>
-    <div class="tier">
-      <div class="tier-name">Enterprise</div>
-      <div class="tier-price">$12K</div>
-      <p style="opacity:0.6;font-size:13px;">Per Application</p>
-      <ul>
-        <li>Enterprise-hardened codebase</li>
-        <li>HIPAA / SOC2 compliance layer</li>
-        <li>Advanced AI model fine-tuning</li>
-        <li>Custom integrations & SSO</li>
-        <li>6-month support + SLA</li>
-        <li>Dedicated DevOps pipeline</li>
-      </ul>
-    </div>
-  </div>
-</div>
+<hr class="divider">
 
-<!-- ==================== SLIDE 7: REVENUE PROJECTIONS ==================== -->
-<div class="slide" data-slide="6">
-  <div class="bg-orb orb-green" style="top:10%;right:-80px;"></div>
-  <div class="slide-label">Revenue Model</div>
-  <h2>Projected SaaS Revenue</h2>
-  <p class="subtitle" style="margin-bottom:6px;">Based on the $7K Product tier with default facility counts.</p>
-  <table class="rev-table">
+<!-- ==================== КОНКУРЕНТНЫЕ ПРЕИМУЩЕСТВА ==================== -->
+<div class="section">
+  <div class="section-label">Конкурентные преимущества</div>
+  <h2>Чем мы <span style="color:#22c55e;">отличаемся</span> от конкурентов</h2>
+  <p>Рынок ИИ в медицине растёт, но большинство решений — узкоспециализированные, дорогие и изолированные. Наш подход принципиально иной.</p>
+
+  <table class="comp-table">
     <thead>
       <tr>
-        <th>Application</th>
-        <th>Facilities</th>
-        <th>$/Facility/Mo</th>
-        <th>Monthly Revenue</th>
-        <th>Annual Revenue</th>
+        <th>Критерий</th>
+        <th class="us">Photon Bounce</th>
+        <th>Конкуренты</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Количество продуктов</strong></td>
+        <td class="us">10 ИИ-приложений в одной экосистеме</td>
+        <td class="them">Обычно 1-2 узких решения</td>
+      </tr>
+      <tr>
+        <td><strong>Модульность</strong></td>
+        <td class="us"><span class="check">✓</span> Любая комбинация, покупай по одному</td>
+        <td class="them"><span class="cross">✗</span> Монолит «всё или ничего»</td>
+      </tr>
+      <tr>
+        <td><strong>Скорость внедрения</strong></td>
+        <td class="us">Недели, не месяцы</td>
+        <td class="them">6-18 месяцев внедрения</td>
+      </tr>
+      <tr>
+        <td><strong>White-label</strong></td>
+        <td class="us"><span class="check">✓</span> Полная ребрендировка под клиента</td>
+        <td class="them"><span class="cross">✗</span> Бренд поставщика навсегда</td>
+      </tr>
+      <tr>
+        <td><strong>Единая шина данных</strong></td>
+        <td class="us"><span class="check">✓</span> Все приложения обмениваются данными</td>
+        <td class="them"><span class="cross">✗</span> Изолированные силосы данных</td>
+      </tr>
+      <tr>
+        <td><strong>ИИ-нативная архитектура</strong></td>
+        <td class="us">ИИ в ядре каждого продукта</td>
+        <td class="them">ИИ добавлен поверх старого кода</td>
+      </tr>
+      <tr>
+        <td><strong>Стоимость владения</strong></td>
+        <td class="us">Низкий порог входа, SaaS-модель</td>
+        <td class="them">Высокий CAPEX + лицензии</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="card-grid" style="margin-top:24px;">
+    <div class="card">
+      <div class="card-icon">🔗</div>
+      <h3>Экосистемный эффект</h3>
+      <p>Чем больше приложений клиент использует, тем умнее становится каждое из них. Единая платформа данных создаёт синергию, недоступную конкурентам с одиночными решениями.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏷️</div>
+      <h3>White-Label с первого дня</h3>
+      <p>Каждое приложение можно выпустить под брендом клиента. Конкуренты продают свой бренд — мы продаём технологию, которая становится вашей.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <h3>Скорость vs. Enterprise</h3>
+      <p>Epic, Cerner, Oracle Health — внедряются годами. Мы доставляем рабочий продукт за недели. Для клиник и сетей, которые не могут ждать.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📈</div>
+      <h3>Модель масштабирования</h3>
+      <p>Начните с одного приложения → докажите ROI → масштабируйте на весь портфель. Нет рисков «большого взрыва», нет заложников вендора.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ==================== ПОТЕНЦИАЛ ДОХОДА ==================== -->
+<div class="section">
+  <div class="section-label">Потенциал</div>
+  <h2>Проекция выручки по портфелю</h2>
+  <p>Консервативные оценки при базовом количестве объектов на каждое приложение:</p>
+
+  <table class="comp-table" id="revTable">
+    <thead>
+      <tr>
+        <th>Приложение</th>
+        <th>Объектов</th>
+        <th>$/Объект/Мес</th>
+        <th>Ежемес. доход</th>
       </tr>
     </thead>
     <tbody id="revBody"></tbody>
     <tfoot>
       <tr style="font-weight:900;border-top:2px solid #22c55e;">
-        <td colspan="3" style="text-align:right;color:#22c55e;">TOTAL</td>
-        <td id="totalMonthly" class="rev-highlight"></td>
-        <td id="totalAnnual" class="rev-highlight"></td>
+        <td colspan="3" style="text-align:right;color:#22c55e;">ИТОГО</td>
+        <td id="totalMonthly" style="color:#22c55e;font-weight:900;"></td>
+      </tr>
+      <tr>
+        <td colspan="3" style="text-align:right;opacity:0.6;">Годовой доход</td>
+        <td id="totalAnnual" style="color:#4ade80;font-weight:700;"></td>
       </tr>
     </tfoot>
   </table>
-  <p class="footer-note">* Revenue projections based on conservative facility estimates. Actual numbers will vary by market and deployment.</p>
+  <p style="font-size:11px;opacity:0.4;margin-top:12px;">* Проекции основаны на консервативных оценках. Реальные показатели зависят от рынка и масштаба.</p>
 </div>
 
-<!-- ==================== SLIDE 8: GO-TO-MARKET ==================== -->
-<div class="slide" data-slide="7">
-  <div class="slide-label">Go-to-Market</div>
-  <h2>Launch Strategy</h2>
-  <div class="timeline">
-    <div class="tl-step">
-      <h4>Phase 1</h4>
-      <p><strong>Weeks 1-4</strong><br>Build & deliver MVP of first 3 flagship apps to pilot clinics</p>
+<hr class="divider">
+
+<!-- ==================== СТРАТЕГИЯ ВЫХОДА ==================== -->
+<div class="section">
+  <div class="section-label">Стратегия</div>
+  <h2>Быстрый вход на рынок</h2>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <h3>Фаза 1 — Пилот</h3>
+      <p>3 флагманских приложения → пилотные клиники → первые платящие клиенты за 4-8 недель.</p>
     </div>
-    <div class="tl-step">
-      <h4>Phase 2</h4>
-      <p><strong>Weeks 5-8</strong><br>Collect feedback, iterate, and onboard first paying customers</p>
-    </div>
-    <div class="tl-step">
-      <h4>Phase 3</h4>
-      <p><strong>Months 3-6</strong><br>Expand portfolio to all 10 apps, scale into hospital networks</p>
-    </div>
-    <div class="tl-step">
-      <h4>Phase 4</h4>
-      <p><strong>Months 6-12</strong><br>White-label partnerships, channel sales, enterprise contracts</p>
-    </div>
-  </div>
-  <div class="grid-2" style="margin-top:36px;">
-    <div class="card" style="text-align:center;">
-      <h3>🎯 Initial Targets</h3>
-      <p>Outpatient clinics, hospice networks, urgent care facilities, and telemedicine startups — organizations actively seeking AI solutions to reduce cost and improve outcomes.</p>
-    </div>
-    <div class="card" style="text-align:center;">
-      <h3>📈 Scale Path</h3>
-      <p>Expand into hospital systems, health networks, and enterprise contracts. Each app becomes a recurring SaaS revenue stream — with upsell across the full suite.</p>
+    <div class="card">
+      <div class="card-icon">🚀</div>
+      <h3>Фаза 2 — Масштаб</h3>
+      <p>Расширение до 10 приложений → больничные сети → white-label партнёрства → корпоративные контракты.</p>
     </div>
   </div>
 </div>
 
-<!-- ==================== SLIDE 9: WHY PHOTON BOUNCE ==================== -->
-<div class="slide" data-slide="8">
-  <div class="bg-orb orb-blue" style="top:-80px;left:40%;"></div>
-  <div class="slide-label">Why Us</div>
-  <h2>Why <span style="color:#22c55e;">Photon Bounce</span></h2>
-  <div class="grid-2" style="max-width:900px;">
+<hr class="divider">
+
+<!-- ==================== ПОЧЕМУ МЫ ==================== -->
+<div class="section">
+  <div class="section-label">Почему мы</div>
+  <h2>Почему <span style="color:#22c55e;">Photon Bounce</span></h2>
+
+  <div class="card-grid">
     <div class="card">
       <div class="card-icon">⚡</div>
-      <h3>Speed to Market</h3>
-      <p>We deliver production-ready AI applications in weeks, not months. Our modular architecture means rapid deployment with minimal risk.</p>
+      <h3>Скорость</h3>
+      <p>Продакшн-готовые приложения за недели. Модульная архитектура — минимальный риск.</p>
     </div>
     <div class="card">
       <div class="card-icon">🧠</div>
-      <h3>AI-Native Engineering</h3>
-      <p>We don't bolt on AI as an afterthought — every product is designed from the ground up with intelligent automation at its core.</p>
+      <h3>ИИ в ядре</h3>
+      <p>ИИ не «прикручен» — каждый продукт спроектирован с интеллектом изначально.</p>
     </div>
     <div class="card">
       <div class="card-icon">🏥</div>
-      <h3>Healthcare Domain Expertise</h3>
-      <p>Deep understanding of clinical workflows, EHR systems, HIPAA requirements, and the unique challenges of medical technology.</p>
+      <h3>Медицинская экспертиза</h3>
+      <p>Глубокое понимание EHR, HIPAA, клинических процессов и специфики отрасли.</p>
     </div>
     <div class="card">
       <div class="card-icon">🔄</div>
-      <h3>Full Lifecycle Partner</h3>
-      <p>From concept to deployment to scaling — we handle architecture, development, integration, and ongoing support. You focus on growth.</p>
+      <h3>Полный цикл</h3>
+      <p>От концепции до масштабирования — архитектура, разработка, интеграция, поддержка.</p>
     </div>
   </div>
 </div>
 
-<!-- ==================== SLIDE 10: CTA ==================== -->
-<div class="slide" data-slide="9">
-  <div class="bg-orb orb-green" style="top:30%;left:30%;width:500px;height:500px;opacity:0.1;"></div>
-  <div class="slide-label">Next Steps</div>
-  <h1>Let's Build the Future of<br><span class="glow">Healthcare Together</span></h1>
-  <p class="subtitle">Choose your starting apps, select a development tier, and we'll have your first AI-powered medical product in the hands of healthcare providers within weeks.</p>
-  <div class="grid-3" style="margin-top:30px;max-width:800px;">
-    <div class="stat">
-      <div class="stat-number" style="font-size:28px;">1</div>
-      <div class="stat-label">Select Your Apps</div>
-    </div>
-    <div class="stat">
-      <div class="stat-number" style="font-size:28px;">2</div>
-      <div class="stat-label">Pick a Tier</div>
-    </div>
-    <div class="stat">
-      <div class="stat-number" style="font-size:28px;">3</div>
-      <div class="stat-label">We Build & Deploy</div>
-    </div>
-  </div>
-  <a class="cta-btn" href="mailto:contact@photonbounce.com">Get Started Today →</a>
-  <p style="margin-top:20px;font-size:13px;opacity:0.4;">contact@photonbounce.com</p>
+<hr class="divider">
+
+<!-- ==================== CTA ==================== -->
+<div class="cta">
+  <div class="section-label">Следующий шаг</div>
+  <h1>Построим будущее<br><span class="glow">здравоохранения вместе</span></h1>
+  <p class="subtitle" style="margin-bottom:30px;">Выберите стартовые приложения — мы доставим первый продукт в руки ваших клиентов за считанные недели.</p>
+  <a class="cta-btn" href="mailto:contact@photonbounce.com">Начать сейчас →</a>
+  <p style="margin-top:16px;font-size:12px;opacity:0.4;">contact@photonbounce.com</p>
 </div>
 
-</div><!-- end .deck -->
+<!-- ==================== FOOTER ==================== -->
+<div class="footer">
+  © 2026 Photon Bounce. Конфиденциально. Все права защищены.
+</div>
+
+</div><!-- end container -->
 
 <script>
-/* ========== DATA (matches index.html) ========== */
 const apps=[
-  {name:"AI Clinical Documentation",facilities:50,rev:800},
-  {name:"Remote Patient Monitoring",facilities:80,rev:600},
-  {name:"AI Intake Triage",facilities:60,rev:500},
-  {name:"Billing Optimization AI",facilities:40,rev:1200},
-  {name:"Compliance Monitoring AI",facilities:30,rev:1500},
-  {name:"Staff Scheduling AI",facilities:70,rev:700},
-  {name:"Hospital Analytics Dashboard",facilities:20,rev:2500},
-  {name:"AI Patient CRM",facilities:90,rev:400},
-  {name:"Drug Interaction AI",facilities:100,rev:300},
-  {name:"Telehealth AI",facilities:60,rev:900}
+  {name:"ИИ-Клиническая Документация",facilities:50,rev:800},
+  {name:"Удалённый Мониторинг",facilities:80,rev:600},
+  {name:"ИИ-Триаж Приёма",facilities:60,rev:500},
+  {name:"Оптимизация Биллинга",facilities:40,rev:1200},
+  {name:"Мониторинг Соответствия",facilities:30,rev:1500},
+  {name:"ИИ-Планирование Персонала",facilities:70,rev:700},
+  {name:"Аналитическая Панель",facilities:20,rev:2500},
+  {name:"ИИ-CRM для Пациентов",facilities:90,rev:400},
+  {name:"ИИ-Анализ Лекарств",facilities:100,rev:300},
+  {name:"ИИ-Телемедицина",facilities:60,rev:900}
 ];
 
-/* ========== REVENUE TABLE ========== */
-(function buildRevTable(){
-  let body="";
-  let tm=0,ta=0;
+(function(){
+  let body="",tm=0;
   apps.forEach(a=>{
-    let monthly=a.facilities*a.rev;
-    let annual=monthly*12;
-    tm+=monthly;ta+=annual;
+    let m=a.facilities*a.rev;
+    tm+=m;
     body+=`<tr>
       <td>${a.name}</td>
       <td>${a.facilities}</td>
       <td>$${a.rev.toLocaleString()}</td>
-      <td class="rev-highlight">$${monthly.toLocaleString()}</td>
-      <td>$${annual.toLocaleString()}</td>
+      <td style="color:#22c55e;font-weight:700;">$${m.toLocaleString()}</td>
     </tr>`;
   });
   document.getElementById("revBody").innerHTML=body;
-  document.getElementById("totalMonthly").textContent="$"+tm.toLocaleString();
-  document.getElementById("totalAnnual").textContent="$"+ta.toLocaleString();
+  document.getElementById("totalMonthly").textContent="$"+tm.toLocaleString()+"/мес";
+  document.getElementById("totalAnnual").textContent="$"+(tm*12).toLocaleString()+"/год";
 })();
-
-/* ========== SLIDE NAVIGATION ========== */
-let current=0;
-const slides=document.querySelectorAll('.slide');
-const total=slides.length;
-
-function goTo(n){
-  if(n<0||n>=total) return;
-  slides[current].classList.remove('active');
-  current=n;
-  slides[current].classList.add('active');
-  updateUI();
-}
-function next(){goTo(current+1);}
-function prev(){goTo(current-1);}
-
-function updateUI(){
-  document.getElementById("counter").textContent=(current+1)+" / "+total;
-  document.getElementById("prevBtn").disabled=current===0;
-  document.getElementById("nextBtn").disabled=current===total-1;
-  document.querySelectorAll('.dot').forEach((d,i)=>{
-    d.classList.toggle('active',i===current);
-  });
-}
-
-/* Build dots */
-(function buildDots(){
-  let html="";
-  for(let i=0;i<total;i++){
-    html+=`<div class="dot ${i===0?'active':''}" onclick="goTo(${i})"></div>`;
-  }
-  document.getElementById("dots").innerHTML=html;
-})();
-
-updateUI();
-
-/* Keyboard nav */
-document.addEventListener('keydown',e=>{
-  if(e.key==='ArrowRight'||e.key===' ') next();
-  if(e.key==='ArrowLeft') prev();
-});
 </script>
 
 </body>
