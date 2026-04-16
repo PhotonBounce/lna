@@ -4,11 +4,14 @@
 <meta charset="UTF-8">
 <title>AI Medical Investment System</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI-powered medical investment calculator — estimate revenue across 10 healthcare SaaS products by Photon Bounce.">
 
 <style>
+*,*::before,*::after{box-sizing:border-box}
+
 body{
  margin:0;
- font-family:Arial;
+ font-family:Arial, Helvetica, sans-serif;
  background:#0b0f1a;
  color:#e5e7eb;
 }
@@ -21,6 +24,7 @@ body{
 /* SIDEBAR */
 .sidebar{
  width:300px;
+ min-width:300px;
  background:#0a0f1d;
  border-right:1px solid #1f2937;
  padding:12px;
@@ -31,7 +35,23 @@ body{
  margin:0 0 10px 0;
 }
 
-.app{
+/* MOBILE TOGGLE */
+.menu-toggle{
+ display:none;
+ position:fixed;
+ top:10px;
+ left:10px;
+ z-index:1000;
+ background:#111827;
+ color:#e5e7eb;
+ border:1px solid #1f2937;
+ border-radius:8px;
+ padding:8px 14px;
+ font-size:18px;
+ cursor:pointer;
+}
+
+.nav-item{
  padding:10px;
  margin:6px 0;
  border-radius:8px;
@@ -39,16 +59,33 @@ body{
  cursor:pointer;
  background:#111827;
  font-size:13px;
+ color:#e5e7eb;
+ text-align:left;
+ width:100%;
+ display:block;
+ transition:border-color 0.2s, background 0.2s;
 }
 
-.app.active{
+.nav-item:hover{
+ background:#1a2332;
+ border-color:#374151;
+}
+
+.nav-item:focus{
+ outline:2px solid #22c55e;
+ outline-offset:2px;
+}
+
+.nav-item.active{
  border-color:#22c55e;
+ background:#0d1f17;
 }
 
 /* MAIN */
 .main{
  flex:1;
  padding:14px;
+ min-width:0;
 }
 
 .card{
@@ -79,8 +116,18 @@ p{
  margin:6px 0;
 }
 
+label{
+ font-size:13px;
+}
+
 input[type=range]{
  width:100%;
+ cursor:pointer;
+}
+
+input[type=range]:focus{
+ outline:2px solid #22c55e;
+ outline-offset:2px;
 }
 
 select{
@@ -89,6 +136,12 @@ select{
  border:1px solid #1f2937;
  padding:6px;
  border-radius:6px;
+ cursor:pointer;
+}
+
+select:focus{
+ outline:2px solid #22c55e;
+ outline-offset:2px;
 }
 
 .value{
@@ -126,24 +179,58 @@ select{
  font-weight:700;
  color:#4ade80;
 }
+
+/* MOBILE */
+@media(max-width:768px){
+ .layout{
+  flex-direction:column;
+ }
+ .sidebar{
+  width:100%;
+  min-width:100%;
+  border-right:none;
+  border-bottom:1px solid #1f2937;
+  position:fixed;
+  top:0;
+  left:-100%;
+  height:100vh;
+  z-index:999;
+  transition:left 0.3s;
+ }
+ .sidebar.open{
+  left:0;
+ }
+ .menu-toggle{
+  display:block;
+ }
+ .main{
+  padding:14px;
+  padding-top:50px;
+ }
+ .profit-main{
+  font-size:22px;
+ }
+}
 </style>
 </head>
 
 <body>
 
+<button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle navigation menu">☰</button>
+
 <div class="layout">
 
 <!-- SIDEBAR NAV -->
-<div class="sidebar">
+<nav class="sidebar" id="sidebar" role="navigation" aria-label="App navigation">
 <h3>AI Medical Apps</h3>
-<div id="nav"></div>
-</div>
+<div id="nav" role="list"></div>
+</nav>
 
 <!-- MAIN -->
-<div class="main">
+<main class="main">
 
 <div class="card">
-<label>Development Tier:</label>
+<label for="tier">Development Tier:</label>
 <select id="tier" onchange="render()">
 <option value="3">$3K MVP</option>
 <option value="7" selected>$7K Product</option>
@@ -153,7 +240,7 @@ select{
 
 <div id="view"></div>
 
-</div>
+</main>
 
 </div>
 
@@ -255,11 +342,16 @@ baseRevenue:900
 
 let selected=0;
 
+/* MOBILE MENU */
+function toggleMenu(){
+ document.getElementById("sidebar").classList.toggle("open");
+}
+
 /* NAV */
 function renderNav(){
  let html="";
  apps.forEach((a,i)=>{
-  html+=`<div class="app ${i===selected?'active':''}" onclick="selectApp(${i})">${a.name}</div>`;
+  html+=`<button class="nav-item ${i===selected?'active':''}" role="listitem" onclick="selectApp(${i})" aria-current="${i===selected?'true':'false'}">${a.name}</button>`;
  });
  document.getElementById("nav").innerHTML=html;
 }
@@ -268,6 +360,8 @@ function renderNav(){
 function selectApp(i){
  selected=i;
  render();
+ /* Close mobile menu after selection */
+ document.getElementById("sidebar").classList.remove("open");
 }
 
 /* TIER MULTIPLIER */
@@ -282,6 +376,9 @@ function render(){
  renderNav();
 
  let a=apps[selected];
+ let m=getMultiplier();
+ let facAdj=Math.round(a.baseClinic*m);
+ let revAdj=Math.round(a.baseRevenue*m);
 
  document.getElementById("view").innerHTML=`
 
@@ -298,13 +395,13 @@ function render(){
 
 <div class="section">
 
-<p>Facilities: <span class="value" id="facVal">${a.baseClinic}</span></p>
-<input type="range" min="10" max="500" value="${a.baseClinic}" id="fac" oninput="calc()">
+<label for="fac">Facilities: <span class="value" id="facVal">${facAdj}</span></label>
+<input type="range" min="10" max="500" value="${a.baseClinic}" id="fac" oninput="calc()" aria-describedby="facVal">
 
-<p>Revenue per facility: $<span class="value" id="revVal">${a.baseRevenue}</span></p>
-<input type="range" min="100" max="3000" value="${a.baseRevenue}" id="rev" oninput="calc()">
+<label for="rev">Revenue per facility: $<span class="value" id="revVal">${revAdj}</span></label>
+<input type="range" min="100" max="3000" value="${a.baseRevenue}" id="rev" oninput="calc()" aria-describedby="revVal">
 
-<div id="profit" class="profit-box"></div>
+<div id="profit" class="profit-box" aria-live="polite"></div>
 
 </div>
 
@@ -329,8 +426,8 @@ function calc(){
  let monthly=fAdj*rAdj;
  let annual=monthly*12;
 
- document.getElementById("facVal").innerText=fAdj;
- document.getElementById("revVal").innerText=rAdj;
+ document.getElementById("facVal").textContent=fAdj;
+ document.getElementById("revVal").textContent=rAdj;
 
  document.getElementById("profit").innerHTML=
  `
@@ -341,7 +438,6 @@ function calc(){
 }
 
 /* INIT */
-renderNav();
 render();
 
 </script>
