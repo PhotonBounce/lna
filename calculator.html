@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI Medical Investment System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI-powered medical investment calculator — estimate revenue across 10 healthcare SaaS products by Photon Bounce.">
+
+<style>
+*,*::before,*::after{box-sizing:border-box}
+
+body{
+ margin:0;
+ font-family:Arial, Helvetica, sans-serif;
+ background:#0b0f1a;
+ color:#e5e7eb;
+}
+
+.layout{
+ display:flex;
+ min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+ width:300px;
+ min-width:300px;
+ background:#0a0f1d;
+ border-right:1px solid #1f2937;
+ padding:12px;
+ overflow-y:auto;
+}
+
+.sidebar h3{
+ margin:0 0 10px 0;
+}
+
+/* MOBILE TOGGLE */
+.menu-toggle{
+ display:none;
+ position:fixed;
+ top:10px;
+ left:10px;
+ z-index:1000;
+ background:#111827;
+ color:#e5e7eb;
+ border:1px solid #1f2937;
+ border-radius:8px;
+ padding:8px 14px;
+ font-size:18px;
+ cursor:pointer;
+}
+
+.nav-item{
+ padding:10px;
+ margin:6px 0;
+ border-radius:8px;
+ border:1px solid #1f2937;
+ cursor:pointer;
+ background:#111827;
+ font-size:13px;
+ color:#e5e7eb;
+ text-align:left;
+ width:100%;
+ display:block;
+ transition:border-color 0.2s, background 0.2s;
+}
+
+.nav-item:hover{
+ background:#1a2332;
+ border-color:#374151;
+}
+
+.nav-item:focus{
+ outline:2px solid #22c55e;
+ outline-offset:2px;
+}
+
+.nav-item.active{
+ border-color:#22c55e;
+ background:#0d1f17;
+}
+
+/* MAIN */
+.main{
+ flex:1;
+ padding:14px;
+ min-width:0;
+}
+
+.card{
+ background:#111827;
+ border:1px solid #1f2937;
+ border-radius:12px;
+ padding:12px;
+ margin-bottom:12px;
+}
+
+.section{
+ margin-top:10px;
+ padding:10px;
+ border-radius:8px;
+ background:#0b1220;
+ border:1px solid #1f2937;
+}
+
+h2{
+ font-size:16px;
+ margin:0 0 10px 0;
+}
+
+p{
+ font-size:13px;
+ line-height:1.6;
+ opacity:0.9;
+ margin:6px 0;
+}
+
+label{
+ font-size:13px;
+}
+
+input[type=range]{
+ width:100%;
+ cursor:pointer;
+}
+
+input[type=range]:focus{
+ outline:2px solid #22c55e;
+ outline-offset:2px;
+}
+
+select{
+ background:#0b1220;
+ color:white;
+ border:1px solid #1f2937;
+ padding:6px;
+ border-radius:6px;
+ cursor:pointer;
+}
+
+select:focus{
+ outline:2px solid #22c55e;
+ outline-offset:2px;
+}
+
+.value{
+ font-weight:bold;
+ color:#22c55e;
+}
+
+/* PROFIT UI */
+.profit-box{
+ margin-top:12px;
+ padding:14px;
+ border-radius:12px;
+ background:linear-gradient(135deg,#052e1f,#064e3b);
+ border:1px solid #22c55e;
+ text-align:center;
+ box-shadow:0 0 20px rgba(34,197,94,0.2);
+}
+
+.profit-main{
+ font-size:26px;
+ font-weight:900;
+ color:#22c55e;
+ text-shadow:0 0 12px rgba(34,197,94,0.7);
+}
+
+.profit-sub{
+ font-size:13px;
+ opacity:0.8;
+ margin-top:4px;
+}
+
+.profit-annual{
+ margin-top:6px;
+ font-size:17px;
+ font-weight:700;
+ color:#4ade80;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+ .layout{
+  flex-direction:column;
+ }
+ .sidebar{
+  width:100%;
+  min-width:100%;
+  border-right:none;
+  border-bottom:1px solid #1f2937;
+  position:fixed;
+  top:0;
+  left:-100%;
+  height:100vh;
+  z-index:999;
+  transition:left 0.3s;
+ }
+ .sidebar.open{
+  left:0;
+ }
+ .menu-toggle{
+  display:block;
+ }
+ .main{
+  padding:14px;
+  padding-top:50px;
+ }
+ .profit-main{
+  font-size:22px;
+ }
+}
+</style>
+</head>
+
+<body>
+
+<button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle navigation menu">☰</button>
+
+<div class="layout">
+
+<!-- SIDEBAR NAV -->
+<nav class="sidebar" id="sidebar" role="navigation" aria-label="App navigation">
+<h3>AI Medical Apps</h3>
+<div id="nav" role="list"></div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+<div class="card">
+<label for="tier">Development Tier:</label>
+<select id="tier" onchange="render()">
+<option value="3">$3K MVP</option>
+<option value="7" selected>$7K Product</option>
+<option value="12">$12K Enterprise</option>
+</select>
+</div>
+
+<div id="view"></div>
+
+</main>
+
+</div>
+
+<script>
+
+/* FULL DATASET (LOCKED) */
+const apps=[
+{
+name:"AI Clinical Documentation",
+what:"AI converts doctor-patient conversations into structured medical documentation.",
+how:"Speech-to-text → NLP → SOAP notes → EHR integration.",
+why:"Doctors spend up to 60% of their time on documentation instead of care.",
+gtm:"Start with clinics and hospice networks, then expand into hospitals.",
+baseClinic:50,
+baseRevenue:800
+},
+{
+name:"Remote Patient Monitoring",
+what:"Continuous monitoring of patient health outside hospitals.",
+how:"IoT devices send data → AI detects anomalies → alerts.",
+why:"Most medical issues occur outside hospital supervision.",
+gtm:"Elderly care and post-acute providers.",
+baseClinic:80,
+baseRevenue:600
+},
+{
+name:"AI Intake Triage",
+what:"Pre-visit AI system to assess patient urgency.",
+how:"Patients submit symptoms → AI evaluates → routes care.",
+why:"Reduces overload from non-critical patients.",
+gtm:"Urgent care clinics.",
+baseClinic:60,
+baseRevenue:500
+},
+{
+name:"Billing Optimization AI",
+what:"Identifies missed billing opportunities.",
+how:"Analyzes records vs billing codes.",
+why:"Hospitals lose millions due to underbilling.",
+gtm:"Hospital finance departments.",
+baseClinic:40,
+baseRevenue:1200
+},
+{
+name:"Compliance Monitoring AI",
+what:"Tracks healthcare compliance automatically.",
+how:"Scans logs → flags violations.",
+why:"Prevents fines and legal issues.",
+gtm:"Enterprise hospitals.",
+baseClinic:30,
+baseRevenue:1500
+},
+{
+name:"Staff Scheduling AI",
+what:"Optimizes workforce scheduling.",
+how:"Forecasts demand → balances staffing.",
+why:"Reduces labor costs significantly.",
+gtm:"Hospital operations teams.",
+baseClinic:70,
+baseRevenue:700
+},
+{
+name:"Hospital Analytics Dashboard",
+what:"Real-time hospital performance insights.",
+how:"Aggregates operational and financial data.",
+why:"Improves executive decision-making.",
+gtm:"Hospital leadership.",
+baseClinic:20,
+baseRevenue:2500
+},
+{
+name:"AI Patient CRM",
+what:"Patient engagement and retention system.",
+how:"Automates messaging and follow-ups.",
+why:"Improves lifetime value.",
+gtm:"Private clinics.",
+baseClinic:90,
+baseRevenue:400
+},
+{
+name:"Drug Interaction AI",
+what:"Detects harmful drug combinations.",
+how:"Analyzes prescriptions instantly.",
+why:"Reduces medical errors and liability.",
+gtm:"Doctors and pharmacies.",
+baseClinic:100,
+baseRevenue:300
+},
+{
+name:"Telehealth AI",
+what:"AI-powered virtual consultation assistant.",
+how:"Handles intake, conversation, documentation.",
+why:"Scales telehealth efficiently.",
+gtm:"Telemedicine startups.",
+baseClinic:60,
+baseRevenue:900
+}
+];
+
+let selected=0;
+
+/* MOBILE MENU */
+function toggleMenu(){
+ document.getElementById("sidebar").classList.toggle("open");
+}
+
+/* NAV */
+function renderNav(){
+ let html="";
+ apps.forEach((a,i)=>{
+  html+=`<button class="nav-item ${i===selected?'active':''}" role="listitem" onclick="selectApp(${i})" aria-current="${i===selected?'true':'false'}">${a.name}</button>`;
+ });
+ document.getElementById("nav").innerHTML=html;
+}
+
+/* SELECT */
+function selectApp(i){
+ selected=i;
+ render();
+ /* Close mobile menu after selection */
+ document.getElementById("sidebar").classList.remove("open");
+}
+
+/* TIER MULTIPLIER */
+function getMultiplier(){
+ let t=+document.getElementById("tier").value;
+ return t===3?0.6:t===7?1:1.5;
+}
+
+/* MAIN RENDER */
+function render(){
+
+ renderNav();
+
+ let a=apps[selected];
+ let m=getMultiplier();
+ let facAdj=Math.round(a.baseClinic*m);
+ let revAdj=Math.round(a.baseRevenue*m);
+
+ document.getElementById("view").innerHTML=`
+
+<div class="card">
+
+<h2>${a.name}</h2>
+
+<div class="section">
+<p><b>What it is:</b> ${a.what}</p>
+<p><b>How it works:</b> ${a.how}</p>
+<p><b>Why it matters:</b> ${a.why}</p>
+<p><b>Go-to-market:</b> ${a.gtm}</p>
+</div>
+
+<div class="section">
+
+<label for="fac">Facilities: <span class="value" id="facVal">${facAdj}</span></label>
+<input type="range" min="10" max="500" value="${a.baseClinic}" id="fac" oninput="calc()" aria-describedby="facVal">
+
+<label for="rev">Revenue per facility: $<span class="value" id="revVal">${revAdj}</span></label>
+<input type="range" min="100" max="3000" value="${a.baseRevenue}" id="rev" oninput="calc()" aria-describedby="revVal">
+
+<div id="profit" class="profit-box" aria-live="polite"></div>
+
+</div>
+
+<div class="section">
+<p style="opacity:0.7">Development by Photon Bounce</p>
+<p><a href="hospice-demo/index.html" style="color:#22c55e;font-weight:bold;text-decoration:underline">🏥 View HospicePro AI Demo →</a></p>
+</div>
+
+</div>
+`;
+
+ calc();
+}
+
+/* CALC */
+function calc(){
+ let f=+document.getElementById("fac").value;
+ let r=+document.getElementById("rev").value;
+ let m=getMultiplier();
+
+ let fAdj=Math.round(f*m);
+ let rAdj=Math.round(r*m);
+ let monthly=fAdj*rAdj;
+ let annual=monthly*12;
+
+ document.getElementById("facVal").textContent=fAdj;
+ document.getElementById("revVal").textContent=rAdj;
+
+ document.getElementById("profit").innerHTML=
+ `
+ <div class="profit-main">$${monthly.toLocaleString()}</div>
+ <div class="profit-sub">Monthly Revenue</div>
+ <div class="profit-annual">$${annual.toLocaleString()} / year</div>
+ `;
+}
+
+/* INIT */
+render();
+
+</script>
+
+</body>
+</html>
